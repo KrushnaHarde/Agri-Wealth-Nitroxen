@@ -169,15 +169,3 @@ spring.datasource.username=root
 spring.datasource.password=password
 ```
 
-## Future Enhancements
-
-- Farm and Polyhouse management
-- Zone and Crop management
-- Task assignment and tracking
-- Weather integration
-- Reporting and analytics
-- Mobile application support
-
-## License
-
-This project is licensed under the MIT License.
