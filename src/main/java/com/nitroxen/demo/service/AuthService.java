@@ -40,9 +40,7 @@ public class AuthService {
     }
 
     public void changePassword(ChangePasswordRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String phoneNumber = authentication.getName();
-
-        userService.changePassword(phoneNumber, request.getCurrentPassword(), request.getNewPassword());
+        // Use the phone number from the request, not from the authentication context
+        userService.changePassword(request.getPhoneNumber(), request.getCurrentPassword(), request.getNewPassword());
     }
 }

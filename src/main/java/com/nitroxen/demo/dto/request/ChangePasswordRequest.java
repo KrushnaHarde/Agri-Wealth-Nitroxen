@@ -8,6 +8,10 @@ import lombok.Data;
 @Schema(description = "Change password request")
 public class ChangePasswordRequest {
 
+    @NotBlank(message = "Phone number is required")
+    @Schema(description = "Phone number", example = "+1234567890")
+    private String phoneNumber;
+
     @NotBlank(message = "Current password is required")
     @Schema(description = "Current password", example = "oldPassword123")
     private String currentPassword;
