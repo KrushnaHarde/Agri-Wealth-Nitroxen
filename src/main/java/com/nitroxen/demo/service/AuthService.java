@@ -5,6 +5,7 @@ import com.nitroxen.demo.dto.request.ChangePasswordRequest;
 import com.nitroxen.demo.dto.request.LoginRequest;
 import com.nitroxen.demo.dto.response.AuthResponse;
 import com.nitroxen.demo.entity.User;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

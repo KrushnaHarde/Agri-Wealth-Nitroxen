@@ -1,19 +1,15 @@
 package com.nitroxen.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "zones")
@@ -21,30 +17,43 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Zone {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String zoneName;
-	private String systemType;
-	private Double zoneArea;
-	private Double cultivationArea;
-	private String cropInfo;
-	private Integer rowCount;
-	private Double rowSpacing;
-	private Double plantSpacing;
-	private Integer plantsPerRow;
-	private String nutrientDosing;
-	private String weatherType;
-	private String customWeatherType;
+    @Column(nullable = false)
+    private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "polyhouse_id", nullable = false)
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
-	private Polyhouse polyhouse;
+    @Column(nullable = false)
+    private String systemType; // NFT, DWC, Drip, Ebb and Flow, etc.
+
+    @Column(nullable = false)
+    private String cropType; // Vegetable, fruit, herb, etc.
+
+    private String cropVariety; // Specific crop variety
+
+    private String plantingConfiguration; // Spacing, density, etc.
+
+    private String irrigationSetup; // Details about irrigation
+
+    private String dosingSystem; // Nutrient dosing details
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "polyhouse_id", nullable = false)
+    private Polyhouse polyhouse;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservoir_id")
+    private Reservoir waterSource;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }
-
-
