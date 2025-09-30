@@ -14,7 +14,16 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
 
     @Schema(description = "JWT access token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-    private String accessToken;
+    private String token;
+
+    @Schema(description = "User ID")
+    private Long userId;
+
+    @Schema(description = "User name")
+    private String name;
+
+    @Schema(description = "User role")
+    private String role;
 
     @Schema(description = "Token type", example = "Bearer")
     @Builder.Default

@@ -33,7 +33,10 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(user);
 
         return AuthResponse.builder()
-                .accessToken(jwtToken)
+                .token(jwtToken)
+                .userId(user.getId())
+                .name(user.getName())
+                .role(user.getRole().name())
                 .tokenType("Bearer")
                 .expiresIn(jwtService.getExpirationTime() / 1000) // Convert to seconds
                 .build();

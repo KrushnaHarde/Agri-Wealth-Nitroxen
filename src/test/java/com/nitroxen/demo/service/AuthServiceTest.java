@@ -86,7 +86,7 @@ public class AuthServiceTest {
 
         // Assert
         assertThat(response).isNotNull();
-        assertThat(response.getAccessToken()).isEqualTo(jwtToken);
+        assertThat(response.getToken()).isEqualTo(jwtToken);
         assertThat(response.getTokenType()).isEqualTo("Bearer");
         assertThat(response.getExpiresIn()).isEqualTo(expirationTime / 1000); // Convert to seconds
 
