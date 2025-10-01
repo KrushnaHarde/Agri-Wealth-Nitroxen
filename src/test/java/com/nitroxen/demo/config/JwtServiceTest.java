@@ -35,9 +35,6 @@ public class JwtServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup mocked UserDetails
-        when(userDetails.getUsername()).thenReturn(username);
-
         // Inject our test values using reflection
         ReflectionTestUtils.setField(jwtService, "secretKey", testSecretKey);
         ReflectionTestUtils.setField(jwtService, "jwtExpiration", testExpiration);
@@ -45,6 +42,9 @@ public class JwtServiceTest {
 
     @Test
     void generateToken_ReturnsValidJwtToken() {
+        // Arrange
+        when(userDetails.getUsername()).thenReturn(username);
+
         // Act
         String token = jwtService.generateToken(userDetails);
 
@@ -59,6 +59,7 @@ public class JwtServiceTest {
         // Arrange
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", "OWNER");
+        when(userDetails.getUsername()).thenReturn(username);
 
         // Act
         String token = jwtService.generateToken(extraClaims, userDetails);
@@ -72,6 +73,7 @@ public class JwtServiceTest {
     @Test
     void isTokenValid_ValidToken_ReturnsTrue() {
         // Arrange
+        when(userDetails.getUsername()).thenReturn(username);
         String token = jwtService.generateToken(userDetails);
 
         // Act
@@ -83,13 +85,14 @@ public class JwtServiceTest {
 
     @Test
     void isTokenValid_ExpiredToken_ReturnsFalse() throws Exception {
+        // Arrange
+        when(userDetails.getUsername()).thenReturn(username);
+        
         // Create a token that is already expired
-        // This requires custom creation of an expired token
+        // Use a negative expiration to create an already-expired token
+        ReflectionTestUtils.setField(jwtService, "jwtExpiration", -1000L); // Expired 1 second ago
 
-        // First, use reflection to temporarily set a negative expiration
-        ReflectionTestUtils.setField(jwtService, "jwtExpiration", -10000); // Expired 10 seconds ago
-
-        // Generate token with negative expiration
+        // Generate token with negative expiration (already expired)
         String expiredToken = jwtService.generateToken(userDetails);
 
         // Reset expiration to original value
@@ -105,6 +108,7 @@ public class JwtServiceTest {
     @Test
     void isTokenValid_WrongUsername_ReturnsFalse() {
         // Arrange
+        when(userDetails.getUsername()).thenReturn(username);
         String token = jwtService.generateToken(userDetails);
 
         // Create a mock UserDetails with different username
@@ -121,6 +125,7 @@ public class JwtServiceTest {
     @Test
     void extractUsername_ValidToken_ReturnsCorrectUsername() {
         // Arrange
+        when(userDetails.getUsername()).thenReturn(username);
         String token = jwtService.generateToken(userDetails);
 
         // Act

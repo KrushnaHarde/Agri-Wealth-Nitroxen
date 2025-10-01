@@ -58,6 +58,7 @@ public class AuthServiceTest {
 
         // Setup change password request
         passwordRequest = new ChangePasswordRequest();
+        passwordRequest.setPhoneNumber("+1234567890");
         passwordRequest.setCurrentPassword("currentPassword");
         passwordRequest.setNewPassword("newPassword");
 
@@ -79,7 +80,7 @@ public class AuthServiceTest {
         when(userService.findByPhoneNumber(loginRequest.getPhoneNumber())).thenReturn(user);
         when(jwtService.generateToken(user)).thenReturn(jwtToken);
         when(jwtService.getExpirationTime()).thenReturn(expirationTime);
-        doNothing().when(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
 
         // Act
         AuthResponse response = authService.login(loginRequest);
@@ -98,13 +99,8 @@ public class AuthServiceTest {
     @Test
     void changePassword_Success() {
         // Arrange
-        // Setup security context for the test
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(authentication.getName()).thenReturn("+1234567890");
-
         doNothing().when(userService).changePassword(
-                eq("+1234567890"),
+                eq(passwordRequest.getPhoneNumber()),
                 eq(passwordRequest.getCurrentPassword()),
                 eq(passwordRequest.getNewPassword())
         );
@@ -114,7 +110,7 @@ public class AuthServiceTest {
 
         // Assert
         verify(userService, times(1)).changePassword(
-                eq("+1234567890"),
+                eq(passwordRequest.getPhoneNumber()),
                 eq(passwordRequest.getCurrentPassword()),
                 eq(passwordRequest.getNewPassword())
         );
