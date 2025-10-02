@@ -74,14 +74,12 @@ public class AdminControllerTest {
                 .updatedAt(now)
                 .createdBy(adminId)
                 .build();
-
-        // Mock authentication to return the admin
-        when(authentication.getPrincipal()).thenReturn(admin);
     }
 
     @Test
     void createOwner_Success() {
         // Arrange
+        when(authentication.getPrincipal()).thenReturn(admin);
         when(userService.createUser(any(CreateUserRequest.class), eq(adminId))).thenReturn(userResponse);
 
         // Act
