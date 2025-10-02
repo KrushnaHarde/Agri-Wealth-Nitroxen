@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,9 +39,9 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    @Operation(summary = "Get logged-in user details", description = "Fetch details of the currently logged-in user")
-    public ResponseEntity<UserResponse> getLoggedInUserDetails(@RequestParam String username) {
-        UserResponse userResponse = authService.getLoggedInUserDetails(username);
+    @Operation(summary = "Get logged-in user details", description = "Fetch details of the currently logged-in user from JWT token")
+    public ResponseEntity<UserResponse> getLoggedInUserDetails(Authentication authentication) {
+        UserResponse userResponse = authService.getLoggedInUserDetails(authentication);
         return ResponseEntity.ok(userResponse);
     }
 

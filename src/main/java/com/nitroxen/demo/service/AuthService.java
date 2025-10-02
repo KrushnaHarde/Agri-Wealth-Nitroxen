@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +58,15 @@ public class AuthService {
         userService.changePassword(request.getPhoneNumber(), request.getCurrentPassword(), request.getNewPassword());
     }
 
-    public UserResponse getLoggedInUserDetails(String username) {
-        User user = userService.findByPhoneNumber(username);
+    public UserResponse getLoggedInUserDetails(Authentication authentication) {
+        // Check if authentication is null
+        if (authentication == null || authentication.getName() == null) {
+            throw new ValidationException("Authentication required. Please login first.");
+        }
+
+        // Extract phone number (username) from the JWT token via Authentication object
+        String phoneNumber = authentication.getName();
+        User user = userService.findByPhoneNumber(phoneNumber);
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())

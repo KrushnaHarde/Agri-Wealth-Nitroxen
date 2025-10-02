@@ -30,7 +30,7 @@ public class AuthResponse {
     @Schema(description = "Token expiration time in seconds", example = "3600")
     private Long expiresIn;
 
-    @Schema(description = "User ID", example = "1")
-    private Long userId;
+//    @Schema(description = "User ID", example = "1")
+//    private Long userId;
 
 }
