@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
-@Schema(description = "Create user request")
+@Getter
 public class CreateUserRequest {
 
     @NotBlank(message = "Name is required")

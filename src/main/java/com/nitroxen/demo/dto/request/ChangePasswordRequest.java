@@ -3,9 +3,10 @@ package com.nitroxen.demo.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
-@Schema(description = "Change password request")
+@Getter
 public class ChangePasswordRequest {
 
     @NotBlank(message = "Phone number is required")

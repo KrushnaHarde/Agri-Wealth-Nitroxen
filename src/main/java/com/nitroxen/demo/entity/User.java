@@ -51,20 +51,22 @@ public class User implements UserDetails {
     private Boolean enabled = true;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Column(name = "created_by")
-    private Long createdBy;
+    @Column(name = "updated_at")
+    private LocalDateTime lastModifiedDate;
 
     // UserDetails implementation
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

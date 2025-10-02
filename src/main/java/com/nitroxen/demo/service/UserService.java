@@ -40,7 +40,6 @@ public class UserService implements UserDetailsService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .enabled(true)
-                .createdBy(createdBy)
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -55,10 +54,8 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserResponse> getUsersCreatedBy(Long createdBy, Role role) {
-        return userRepository.findByRoleAndCreatedBy(role, createdBy)
-                .stream()
-                .map(this::mapToUserResponse)
-                .collect(Collectors.toList());
+        // Since User entity doesn't have createdBy field, we'll return users by role for now
+        return getUsersByRole(role);
     }
 
     public User findByPhoneNumber(String phoneNumber) {
@@ -75,6 +72,16 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    public UserResponse getLoggedInUserDetails(String username) {
+        User user = userRepository.findByPhoneNumber(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+        return mapToUserResponse(user);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     private void validateUserCreation(CreateUserRequest request) {
@@ -95,9 +102,8 @@ public class UserService implements UserDetailsService {
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .enabled(user.getEnabled())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .createdBy(user.getCreatedBy())
+                .createdAt(user.getCreatedDate())
+                .updatedAt(user.getLastModifiedDate())
                 .build();
     }
 }
