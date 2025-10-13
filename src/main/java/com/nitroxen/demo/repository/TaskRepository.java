@@ -8,4 +8,7 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByWorkerId(Long workerId);
+    List<Task> findByWorkerIdAndStatus(Long workerId, Task.TaskStatus status);
+    List<Task> findByStatus(Task.TaskStatus status);
+    List<Task> findByWorkerIdOrderByCreatedAtDesc(Long workerId);
 }

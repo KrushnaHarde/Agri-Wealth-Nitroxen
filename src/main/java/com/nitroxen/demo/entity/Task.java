@@ -22,7 +22,18 @@ public class Task {
 
     private String fileUrl;
 
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status = TaskStatus.ASSIGNED;
+
+    private String completionImageUrl; // For storing WhatsApp images
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private LocalDateTime completedAt;
+
+    public enum TaskStatus {
+        ASSIGNED, IN_PROGRESS, COMPLETED, CANCELLED
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -87,5 +98,32 @@ public class Task {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+        if (status == TaskStatus.COMPLETED && completedAt == null) {
+            this.completedAt = LocalDateTime.now();
+        }
+    }
+
+    public String getCompletionImageUrl() {
+        return completionImageUrl;
+    }
+
+    public void setCompletionImageUrl(String completionImageUrl) {
+        this.completionImageUrl = completionImageUrl;
+    }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 }
