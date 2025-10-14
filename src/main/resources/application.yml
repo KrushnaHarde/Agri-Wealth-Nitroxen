@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: AgriWealth
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:agriwealth_db}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:Atharv123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+
+app:
+  file:
+    upload-dir: ${FILE_UPLOAD_DIR:uploads}
+
+# Twilio WhatsApp Configuration
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:your_account_sid}
+  auth-token: ${TWILIO_AUTH_TOKEN:your_auth_token}
+  whatsapp-number: ${TWILIO_WHATSAPP_NUMBER:+14155238886}
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET:default-secret-key}
+      expiration: ${JWT_EXPIRATION:86400000}
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID:your_account_sid}
+    auth-token: ${TWILIO_AUTH_TOKEN:your_auth_token}
+    verify-service-sid: ${TWILIO_VERIFY_SERVICE_SID:your_verify_service_sid}
+    whatsapp-from-number: ${TWILIO_WHATSAPP_FROM:whatsapp:+14155238886}
+    reset-password-token-expiration: ${RESET_TOKEN_EXPIRATION:900000}
+
+server:
+  port: ${SERVER_PORT:8081}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+logging:
+  level:
+    com:
+      nitroxen:
+        demo: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

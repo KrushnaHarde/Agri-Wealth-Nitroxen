@@ -1,0 +1,38 @@
+package com.nitroxen.demo.config;
+
+import com.twilio.Twilio;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
+
+@Configuration
+public class TwilioConfig {
+
+    @Value("${twilio.account-sid}")
+    private String accountSid;
+
+    @Value("${twilio.auth-token}")
+    private String authToken;
+
+    @Value("${twilio.whatsapp-number}")
+    private String whatsappNumber;
+
+    @PostConstruct
+    public void initTwilio() {
+        Twilio.init(accountSid, authToken);
+        System.out.println("Twilio initialized successfully with WhatsApp number: " + whatsappNumber);
+    }
+
+    public String getWhatsappNumber() {
+        return whatsappNumber;
+    }
+
+    public String getAccountSid() {
+        return accountSid;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+}
